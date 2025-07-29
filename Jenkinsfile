@@ -5,7 +5,7 @@ pipeline {
         node {
             label 'master'
         }
-
+    }
 
     environment {
         REPO_URL = 'https://github.com/cloudacademy/webgl-globe'
