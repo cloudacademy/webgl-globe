@@ -1,13 +1,16 @@
+@Library('docker-pipeline') _
+
 pipeline {
     agent {
         node {
             label 'master'
         }
-    }
+
 
     environment {
         REPO_URL = 'https://github.com/cloudacademy/webgl-globe'
         CONTAINER_NAME = 'globe2025'
+        IMAGE_NAME = 'cloudacademydevops/globe2025'
     }
 
     stages {
@@ -20,8 +23,8 @@ pipeline {
         stage('Docker Build') {
             steps {
                 script {
-                    def TAG = sh(script: "echo ${env.GIT_COMMIT} | cut -c1-6", returnStdout: true).trim()
-                    sh "docker build -t cloudacademydevops/globe2025:${TAG} ."
+                    def tag = sh(script: "echo ${env.GIT_COMMIT} | cut -c1-6", returnStdout: true).trim()
+                    dockerPipeline.buildImage(env.IMAGE_NAME, tag)
                 }
             }
         }
@@ -29,12 +32,8 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 script {
-                    def TAG = sh(script: "echo ${env.GIT_COMMIT} | cut -c1-6", returnStdout: true).trim()
-                    sh """
-                        docker stop ${CONTAINER_NAME} || true
-                        docker rm ${CONTAINER_NAME} || true
-                        docker run -d --name ${CONTAINER_NAME} -p 8888:80 cloudacademydevops/globe2025:${TAG}
-                    """
+                    def tag = sh(script: "echo ${env.GIT_COMMIT} | cut -c1-6", returnStdout: true).trim()
+                    dockerPipeline.runContainer(env.CONTAINER_NAME, env.IMAGE_NAME, tag)
                 }
             }
         }
