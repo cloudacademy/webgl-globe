@@ -1,4 +1,4 @@
-@Library('docker-pipeline') _
+@Library('docker-pipeline@main') _
 
 pipeline {
     agent {
