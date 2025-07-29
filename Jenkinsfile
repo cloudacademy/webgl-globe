@@ -20,7 +20,7 @@ pipeline {
         stage('Docker Build') {
             steps {
                 script {
-                    TAG = sh(script: "echo ${env.GIT_COMMIT} | cut -c1-6", returnStdout: true).trim()
+                    def TAG = sh(script: "echo ${env.GIT_COMMIT} | cut -c1-6", returnStdout: true).trim()
                     sh "docker build -t cloudacademydevops/globe2025:${TAG} ."
                 }
             }
@@ -29,7 +29,7 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 script {
-                    TAG = sh(script: "echo ${env.GIT_COMMIT} | cut -c1-6", returnStdout: true).trim()
+                    def TAG = sh(script: "echo ${env.GIT_COMMIT} | cut -c1-6", returnStdout: true).trim()
                     sh """
                         docker stop ${CONTAINER_NAME} || true
                         docker rm ${CONTAINER_NAME} || true
