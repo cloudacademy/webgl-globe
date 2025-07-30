@@ -20,6 +20,14 @@ pipeline {
             }
         }
 
+        stage('Build Version') {
+            steps {
+                script {
+                    updateBuildVersion('src/index.html')
+                }
+            }
+        }        
+
         stage('Docker Build') {
             steps {
                 script {
