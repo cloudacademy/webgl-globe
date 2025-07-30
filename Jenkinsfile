@@ -17,6 +17,16 @@ pipeline {
             }
         }
 
+        stage('Update Build Version') {
+            steps {
+                script {
+                    sh '''
+                        sed -i "s/\\(Build v[0-9]*\\.[0-9]*\\.\\)[0-9]*/\\1$BUILD_NUMBER/" src/index.html
+                    '''
+                }
+            }
+        }
+
         stage('Docker Build') {
             steps {
                 script {
