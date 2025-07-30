@@ -17,7 +17,7 @@ pipeline {
             }
         }
 
-        stage('Update Build Version') {
+        stage('Build Version') {
             steps {
                 script {
                     sh '''
